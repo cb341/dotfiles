@@ -186,3 +186,8 @@ source <(ng completion script)
 alias py='python'
 
 bindkey '^X' create_completion # omzsh codex plugin
+export PATH="/opt/homebrew/opt/gradle@8/bin:$PATH"
+export PATH="/opt/homebrew/opt/php@8.1/bin:$PATH"
+export PATH="/opt/homebrew/opt/php@8.1/sbin:$PATH"
+  export LDFLAGS="-L/opt/homebrew/opt/php@8.1/lib"
+  export CPPFLAGS="-I/opt/homebrew/opt/php@8.1/include"
