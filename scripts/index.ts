@@ -7,10 +7,10 @@ import chalk from "chalk";
 const { log } = console;
 
 const filename = process.argv[2];
-const pretendDayEnd = process.argv[3] === 'y';
+const pretendDayEnd = process.argv[3] === "y";
 
-const columns = ['Project', 'Date', 'Hours', 'Issue'];
-const indicies: Record<typeof columns[number], number> = {};
+const columns = ["Project", "Date", "Hours", "Issue"];
+const indicies: Record<(typeof columns)[number], number> = {};
 
 const dateDict: Record<string, number> = {}; // use a dict to aggregate hours by date
 
@@ -43,7 +43,7 @@ createReadStream(filename)
     dateList.forEach(([date, hours], index) => {
       if (index === 0 && hours < 8.4 && pretendDayEnd) {
         totalHours += 8.4;
-        log(chalk.magenta(`${date}: ${format(hours)}, counted as 8.4`))
+        log(chalk.magenta(`${date}: ${format(hours)}, counted as 8.4`));
       } else {
         totalHours += hours;
 
@@ -56,11 +56,13 @@ createReadStream(filename)
     });
 
     log(`\nTotal hours: ${format(totalHours)}`);
-    log(`Expected hours: ${format(8.4 * dateList.length)}`)
-    log(`\nOvertime in this period: ${format(totalHours - 8.4 * dateList.length)}`)
+    log(`Expected hours: ${format(8.4 * dateList.length)}`);
+    log(
+      `\nOvertime in this period: ${format(totalHours - 8.4 * dateList.length)}`,
+    );
 
     log(`Average hours: ${format(totalHours / dateList.length)}`);
-    log(`Total days: ${dateList.length}`)
+    log(`Total days: ${dateList.length}`);
   });
 
 // helpers

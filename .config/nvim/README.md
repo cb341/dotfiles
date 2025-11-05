@@ -30,12 +30,13 @@ Here are some of the key files in the repository:
 I am using the lazyvim plugin manager to manage plugins.
 [Lazyvim](https://github.com/folke/lazy.nvim) is a plugin manager that loads plugins lazily, only when they are needed.
 
-
 #### File Exploring
+
 - **bufexplorer**: Buffer explorer / picker.
 - **Oil**: A text buffer based file explorer.
 
 #### Autocompletion
+
 - **nvim-cmp**: Autocompletion framework.
 - **LuaSnip**: Snippet engine.
 - **cmp-buffer**: Buffer source for nvim-cmp.
@@ -46,6 +47,7 @@ I am using the lazyvim plugin manager to manage plugins.
 - **friendly-snippets**: Preconfigured snippets for nvim-cmp.
 
 #### Navigation
+
 - **vim-tmux-navigator**: Seamless navigation between tmux panes and vim splits.
 - **vim-visual-multi**: Multiple cursors plugin.
 - **nvim-surround**: Surroundings operations (add, change, delete).
@@ -53,14 +55,17 @@ I am using the lazyvim plugin manager to manage plugins.
 - **nvim-treesitter-endwise**: Endwise motion based on treesitter.
 
 #### FZF (Fuzzy Finder)
+
 - **telescope.nvim**: Highly extendable fuzzy finder over lists.
 
 #### Git
+
 - **gitsigns.nvim**: Git signs (add, change, delete) in the sign column.
 - **lazygit.nvim**: Terminal UI for git commands.
 - **diffview.nvim**: Side-by-side diff viewer for git in Neovim.
 
 #### Other
+
 - **copilot.vim**: AI pair programming assistant.
 - **neotest-rspec**: RSpec test runner.
 - **nvim-lspconfig**: Quickstart configurations for the Nvim LSP client.

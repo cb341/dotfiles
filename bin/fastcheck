@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# Fast check script for formatting and linting
+# This script checks if code is properly formatted without modifying files
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+echo "🔍 Running fast check..."
+echo ""
+
+# Track if any checks fail
+FAILED=0
+
+# Check if we're in the dotfiles directory
+if [ ! -d ".config/nvim" ]; then
+    echo -e "${RED}✗ Error: Must run from dotfiles directory${NC}"
+    exit 1
+fi
+
+# Check Lua files with stylua (if available)
+if command -v stylua &> /dev/null; then
+    echo "📝 Checking Lua formatting..."
+    if ! stylua --check .config/nvim/lua/**/*.lua 2>/dev/null; then
+        echo -e "${RED}✗ Lua files are not properly formatted${NC}"
+        echo -e "${YELLOW}  Run: stylua .config/nvim/lua/**/*.lua${NC}"
+        FAILED=1
+    else
+        echo -e "${GREEN}✓ Lua files are properly formatted${NC}"
+    fi
+    echo ""
+else
+    echo -e "${YELLOW}⚠ stylua not found, skipping Lua formatting check${NC}"
+    echo ""
+fi
+
+# Check JavaScript/TypeScript/JSON/YAML files with prettier (if available)
+if command -v prettier &> /dev/null; then
+    echo "📝 Checking Prettier formatting..."
+    # Find all relevant files
+    FILES=$(find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.jsx" -o -name "*.tsx" -o -name "*.json" -o -name "*.yaml" -o -name "*.yml" -o -name "*.md" \) -not -path "*/node_modules/*" -not -path "*/.git/*" 2>/dev/null || true)
+
+    if [ -n "$FILES" ]; then
+        if ! echo "$FILES" | xargs prettier --check 2>/dev/null; then
+            echo -e "${RED}✗ Some files are not properly formatted with Prettier${NC}"
+            echo -e "${YELLOW}  Run: prettier --write <files>${NC}"
+            FAILED=1
+        else
+            echo -e "${GREEN}✓ All files are properly formatted with Prettier${NC}"
+        fi
+    else
+        echo -e "${YELLOW}⚠ No files found to check with Prettier${NC}"
+    fi
+    echo ""
+else
+    echo -e "${YELLOW}⚠ prettier not found, skipping Prettier formatting check${NC}"
+    echo ""
+fi
+
+# Check shell scripts with shellcheck (if available)
+if command -v shellcheck &> /dev/null; then
+    echo "🐚 Checking shell scripts..."
+    SHELL_FILES=$(find . -type f -name "*.sh" -not -path "*/.git/*" 2>/dev/null || true)
+
+    if [ -n "$SHELL_FILES" ]; then
+        if ! echo "$SHELL_FILES" | xargs shellcheck 2>/dev/null; then
+            echo -e "${RED}✗ Shell script issues found${NC}"
+            FAILED=1
+        else
+            echo -e "${GREEN}✓ Shell scripts pass shellcheck${NC}"
+        fi
+    fi
+    echo ""
+else
+    echo -e "${YELLOW}⚠ shellcheck not found, skipping shell script check${NC}"
+    echo ""
+fi
+
+# Final result
+if [ $FAILED -eq 1 ]; then
+    echo -e "${RED}❌ Fast check FAILED${NC}"
+    exit 1
+else
+    echo -e "${GREEN}✅ Fast check PASSED${NC}"
+    exit 0
+fi
