@@ -5,3 +5,4 @@
 vim.g.snacks_animate = false
 vim.g.autoformat = false
 vim.opt.ruler = true
+vim.opt.swapfile = false
