@@ -11,46 +11,40 @@ vim.opt.termguicolors = true
 vim.opt.undofile = true
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.cmd("colorscheme sorbet")
 
 vim.opt.runtimepath:append("/opt/homebrew/opt/fzf")
-
-vim.lsp.config["lua_ls"] = {
+vim.lsp.config("lua_ls",{
 	filetypes = { 'lua' },
-  cmd = { 'lua-language-server' },
-    -- on_attach = on_attach,
-    -- flags = lsp_flags,
-    settings = {
-        Lua = {
-            runtime = {
-                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-                version = "LuaJIT",
-            },
-            diagnostics = {
-                -- Get the language server to recognize the `vim` global
-                globals = { "vim" },
-            },
-            workspace = {
-                -- Make the server aware of Neovim runtime files
-                library = vim.api.nvim_get_runtime_file("", true),
-            },
-            -- Do not send telemetry data containing a randomized but unique identifier
-            telemetry = {
-                enable = false,
-            },
-        },
-    },
-}
-vim.lsp.config['ruby_lsp'] = {
-  cmd = { 'ruby-lsp' },
-  filetypes = { 'ruby', 'eruby' },
-}
-vim.cmd[[set completeopt+=menuone,noselect,popup]]
-vim.lsp.enable("lua_ls", "ruby_lsp")
-vim.g.mapleader = " "
+	cmd = { 'lua-language-server' },
+	settings = {
+		Lua = {
+			runtime = {
+				version = "LuaJIT",
+			},
+			diagnostics = {
+				globals = { "vim" },
+			},
+			workspace = {
+				library = vim.api.nvim_get_runtime_file("", true),
+			},
+		},
+	},
+})
 
+-- vim.lsp.config['ruby_lsp'] = {
+-- 	cmd = { 'ruby-lsp' },
+-- 	filetypes = { 'rb', 'ruby', 'eruby' },
+-- }
+-- vim.lsp.enable({ "lua_ls", "ruby_lsp" })
+
+vim.cmd [[set completeopt+=menuone,noselect,popup]]
+
+vim.g.mapleader = " "
 vim.keymap.set({ "n", "v", "x" }, "<leader>s", "<Cmd>source $MYVIMRC<CR>")
 vim.keymap.set({ "n", "v", "x" }, "<leader>e", "<Cmd>vs $MYVIMRC<CR>")
-vim.keymap.set({ "n", "v", "x" }, "<leader>f", "<Cmd>FZF<CR>")
+vim.keymap.set({ "n", "v", "x" }, "<leader>f", "<Cmd>FZF!<CR>")
+vim.keymap.set({ "n", "v", "x" }, "<leader>/", "<Cmd>RG!<CR>")
 
 vim.api.nvim_create_autocmd('LspAttach', {
 	group = vim.api.nvim_create_augroup('my.lsp', {}),
@@ -66,9 +60,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-    callback = function(ev)
-        pcall(vim.treesitter.start, ev.buf)
-    end
+	callback = function(ev)
+		pcall(vim.treesitter.start, ev.buf)
+	end
 })
 
 vim.pack.add({
@@ -79,12 +73,22 @@ vim.pack.add({
 	"https://github.com/tpope/vim-fugitive",
 	"https://github.com/tpope/vim-rails",
 	"https://github.com/RRethy/nvim-treesitter-endwise",
-	"https://github.com/neovim/nvim-lspconfig",
 	"https://github.com/tpope/vim-surround",
 	"https://github.com/tpope/vim-repeat",
 	"https://github.com/stevearc/oil.nvim",
-	"https://github.com/lewis6991/gitsigns.nvim"
+	"https://github.com/lewis6991/gitsigns.nvim",
+	"https://github.com/jremmen/vim-ripgrep",
+	"https://github.com/junegunn/fzf.vim",
 })
+
+vim.lsp.config('ruby_lsp', {})
+vim.lsp.config('rust_analyzer', {})
+
+vim.lsp.enable("lua_ls")
+vim.lsp.enable("rust_analyzer")
+vim.lsp.enable("ruby_lsp")
+
+-- vim.lsp.config('rust_analyzer', {})
 
 require("neoscroll").setup()
 require("oil").setup({
@@ -103,10 +107,12 @@ vim.keymap.set("n", "<leader>hr", "<CMD>Gitsigns reset_hunk<CR>")
 vim.keymap.set("n", "<leader>hR", "<CMD>Gitsigns reset_buffer<CR>")
 vim.keymap.set("n", "<leader>hd", "<CMD>Gitsigns diffthis<CR>")
 
+vim.keymap.set("n", "<leader>F", function() vim.lsp.buf.format({ async = true }) end)
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "gitcommit",
 	callback = function()
 		vim.cmd("startinsert")
 	end,
 })
-vim.keymap.set("n", "<leader>c", "<CMD>Git commit -v<CR>")
+vim.keymap.set("n", "<leader>C", "<CMD>Git commit -v<CR>")
