@@ -1,5 +1,13 @@
 {
   "plugins": {
+    "cmp-nvim-lsp": {
+      "rev": "cbc7b02bb99fae35cb42f514762b89b5126651ef",
+      "src": "git@github.com:hrsh7th/cmp-nvim-lsp"
+    },
+    "fzf.vim": {
+      "rev": "ddc14a6a5471147e2a38e6b32a7268282f669b0a",
+      "src": "git@github.com:junegunn/fzf.vim"
+    },
     "gitlinker.nvim": {
       "rev": "cc59f732f3d043b626c8702cb725c82e54d35c25",
       "src": "git@github.com:ruifm/gitlinker.nvim"
@@ -7,6 +15,14 @@
     "gitsigns.nvim": {
       "rev": "abf82a65f185bd54adc0679f74b7d6e1ada690c9",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
+    },
+    "mason-lspconfig.nvim": {
+      "rev": "c953789db7fd28eafe5eb5659846d34b5024b3cc",
+      "src": "git@github.com:mason-org/mason-lspconfig.nvim"
+    },
+    "mason.nvim": {
+      "rev": "44d1e90e1f66e077268191e3ee9d2ac97cc18e65",
+      "src": "git@github.com:mason-org/mason.nvim"
     },
     "neoscroll.nvim": {
       "rev": "c8d29979cb0cb3a2437a8e0ae683fd82f340d3b8",
@@ -39,6 +55,10 @@
     "vim-repeat": {
       "rev": "65846025c15494983dafe5e3b46c8f88ab2e9635",
       "src": "https://github.com/tpope/vim-repeat"
+    },
+    "vim-ripgrep": {
+      "rev": "2bb2425387b449a0cd65a54ceb85e123d7a320b8",
+      "src": "git@github.com:jremmen/vim-ripgrep"
     },
     "vim-surround": {
       "rev": "3d188ed2113431cf8dac77be61b842acb64433d9",

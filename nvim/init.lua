@@ -67,7 +67,6 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.pack.add({
 	"https://github.com/nvim-treesitter/nvim-treesitter",
-	"https://github.com/neovim/nvim-lspconfig",
 	"https://github.com/karb94/neoscroll.nvim",
 	"https://github.com/ruifm/gitlinker.nvim",
 	"https://github.com/tpope/vim-fugitive",
@@ -81,14 +80,53 @@ vim.pack.add({
 	"https://github.com/junegunn/fzf.vim",
 })
 
+vim.g.rails_projections = {
+	["app/models/*.rb"] = {
+		alternate = {
+			"spec/factories/{plural}.rb",
+			"spec/models/{singular}_spec.rb",
+		},
+	},
+	["spec/factories/*.rb"] = {
+    command = "factory",
+    affinity = "model",
+    alternate = {
+      "app/models/{}.rb",
+      "spec/models/{}_spec.rb",
+    },
+    test = "spec/models/{}_spec.rb",
+  },
+  ["app/controllers/*.rb"] = {
+    alternate = {
+      "spec/requests/{}_spec.rb",
+    },
+    test = "spec/requests/{}_spec.rb",
+  },
+  ["spec/requests/*_spec.rb"] = {
+    command = "request",
+    affinity = "controller",
+    alternate = {
+      "app/controllers/{}.rb",
+    },
+    test = "spec/requests/{}_spec.rb",
+  },
+  ["spec/factories/*.rb"] = {
+    command = "factory",
+    affinity = "model",
+    alternate = {
+      "app/models/{singular}.rb",
+      "spec/models/{singular}_spec.rb",
+    },
+    test = "spec/models/{singular}_spec.rb",
+  },
+}
+
 vim.lsp.config('ruby_lsp', {})
 vim.lsp.config('rust_analyzer', {})
 
 vim.lsp.enable("lua_ls")
 vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("ruby_lsp")
-
--- vim.lsp.config('rust_analyzer', {})
 
 require("neoscroll").setup()
 require("oil").setup({
