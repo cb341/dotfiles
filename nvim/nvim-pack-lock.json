@@ -28,6 +28,10 @@
       "rev": "44d1e90e1f66e077268191e3ee9d2ac97cc18e65",
       "src": "git@github.com:mason-org/mason.nvim"
     },
+    "multicursor.nvim": {
+      "rev": "630dd29dd696bc977cb81d7dd2fa6bb280f60fc4",
+      "src": "https://github.com/jake-stewart/multicursor.nvim"
+    },
     "neoscroll.nvim": {
       "rev": "c8d29979cb0cb3a2437a8e0ae683fd82f340d3b8",
       "src": "git@github.com:karb94/neoscroll.nvim"
@@ -71,6 +75,10 @@
     "vim-surround": {
       "rev": "3d188ed2113431cf8dac77be61b842acb64433d9",
       "src": "https://github.com/tpope/vim-surround"
+    },
+    "vim-visual-multi": {
+      "rev": "a6975e7c1ee157615bbc80fc25e4392f71c344d4",
+      "src": "https://github.com/mg979/vim-visual-multi"
     }
   }
 }

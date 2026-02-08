@@ -14,6 +14,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.scrolloff = 6
 vim.opt.list = true
+vim.o.clipboard = "unnamedplus"
 
 vim.opt.runtimepath:append("/opt/homebrew/opt/fzf")
 vim.lsp.config("lua_ls", {
@@ -104,9 +105,10 @@ vim.pack.add({
   "https://github.com/junegunn/fzf.vim",
   -- "https://github.com/ThePrimeagen/refactoring.nvim"
   "https://github.com/sainnhe/gruvbox-material",
+  "https://github.com/mg979/vim-visual-multi"
 }, { load = true })
 
-vim.g.gruvbox_material_background = 'hard'
+-- vim.g.gruvbox_material_background = 'hard'
 vim.g.gruvbox_material_better_performance = 1
 vim.cmd("colorscheme gruvbox-material")
 
@@ -117,15 +119,6 @@ vim.g.rails_projections = {
       "spec/models/{singular}_spec.rb",
     },
   },
-  -- ["spec/factories/*.rb"] = {
-  --    command = "factory",
-  --    affinity = "model",
-  --    alternate = {
-  --      "app/models/{}.rb",
-  --      "spec/models/{}_spec.rb",
-  --    },
-  --    test = "spec/models/{}_spec.rb",
-  --  },
   ["app/controllers/*.rb"] = {
     alternate = {
       "spec/requests/{}_spec.rb",
