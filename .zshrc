@@ -15,7 +15,7 @@ set -o vi
    zsh-vi-mode
    fast-syntax-highlighting
    rust
-   zsh-autocomplete
+   # zsh-autocomplete
    zsh_codex
  )
 

@@ -1,6 +1,7 @@
 vim.cmd([[set noswapfile]])
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
 vim.opt.showtabline = 2
 vim.opt.signcolumn = "yes"
 vim.opt.wrap = true
@@ -11,49 +12,48 @@ vim.opt.termguicolors = true
 vim.opt.undofile = true
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.cmd("colorscheme sorbet")
 vim.opt.scrolloff = 6
 vim.opt.list = true
 
 vim.opt.runtimepath:append("/opt/homebrew/opt/fzf")
 vim.lsp.config("lua_ls", {
-	filetypes = { 'lua' },
-	cmd = { 'lua-language-server' },
-	settings = {
-		Lua = {
-			runtime = {
-				version = "LuaJIT",
-			},
-			diagnostics = {
-				globals = { "vim" },
-			},
-			workspace = {
-				library = vim.api.nvim_get_runtime_file("", true),
-			},
-		},
-	},
+  filetypes = { 'lua' },
+  cmd = { 'lua-language-server' },
+  settings = {
+    Lua = {
+      runtime = {
+        version = "LuaJIT",
+      },
+      diagnostics = {
+        globals = { "vim" },
+      },
+      workspace = {
+        library = vim.api.nvim_get_runtime_file("", true),
+      },
+    },
+  },
 })
 
 vim.lsp.config("emmet-ls", {
-	cmd = { 'emmet-ls', '--stdio' },
-	filetypes = {
-		'astro',
-		'css',
-		'eruby',
-		'html',
-		'htmlangular',
-		'htmldjango',
-		'javascriptreact',
-		'less',
-		'pug',
-		'sass',
-		'scss',
-		'svelte',
-		'templ',
-		'typescriptreact',
-		'vue',
-	},
-	root_markers = { '.git' },
+  cmd = { 'emmet-ls', '--stdio' },
+  filetypes = {
+    'astro',
+    'css',
+    'eruby',
+    'html',
+    'htmlangular',
+    'htmldjango',
+    'javascriptreact',
+    'less',
+    'pug',
+    'sass',
+    'scss',
+    'svelte',
+    'templ',
+    'typescriptreact',
+    'vue',
+  },
+  root_markers = { '.git' },
 })
 
 -- vim.lsp.config['ruby_lsp'] = {
@@ -71,79 +71,84 @@ vim.keymap.set({ "n", "v", "x" }, "<leader>f", "<Cmd>FZF!<CR>")
 vim.keymap.set({ "n", "v", "x" }, "<leader>/", "<Cmd>RG!<CR>")
 
 vim.api.nvim_create_autocmd('LspAttach', {
-	group = vim.api.nvim_create_augroup('my.lsp', {}),
-	callback = function(args)
-		local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-		if client:supports_method('textDocument/completion') then
-			-- Optional: trigger autocompletion on EVERY keypress. May be slow!
-			local chars = {}; for i = 32, 126 do table.insert(chars, string.char(i)) end
-			client.server_capabilities.completionProvider.triggerCharacters = chars
-			vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
-		end
-	end,
+  group = vim.api.nvim_create_augroup('my.lsp', {}),
+  callback = function(args)
+    local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+    if client:supports_method('textDocument/completion') then
+      -- Optional: trigger autocompletion on EVERY keypress. May be slow!
+      local chars = {}; for i = 32, 126 do table.insert(chars, string.char(i)) end
+      client.server_capabilities.completionProvider.triggerCharacters = chars
+      vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+    end
+  end,
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	callback = function(ev)
-		pcall(vim.treesitter.start, ev.buf)
-	end
+  callback = function(ev)
+    pcall(vim.treesitter.start, ev.buf)
+  end
 })
 
 vim.pack.add({
-	"https://github.com/nvim-treesitter/nvim-treesitter",
-	"https://github.com/karb94/neoscroll.nvim",
-	"https://github.com/ruifm/gitlinker.nvim",
-	"https://github.com/tpope/vim-fugitive",
-	"https://github.com/tpope/vim-rails",
-	"https://github.com/RRethy/nvim-treesitter-endwise",
-	"https://github.com/tpope/vim-surround",
-	"https://github.com/tpope/vim-repeat",
-	"https://github.com/stevearc/oil.nvim",
-	"https://github.com/lewis6991/gitsigns.nvim",
-	"https://github.com/jremmen/vim-ripgrep",
-	"https://github.com/junegunn/fzf.vim",
-	-- "https://github.com/ThePrimeagen/refactoring.nvim"
-})
+  "https://github.com/nvim-treesitter/nvim-treesitter",
+  "https://github.com/karb94/neoscroll.nvim",
+  "https://github.com/ruifm/gitlinker.nvim",
+  "https://github.com/tpope/vim-fugitive",
+  "https://github.com/tpope/vim-rails",
+  "https://github.com/RRethy/nvim-treesitter-endwise",
+  "https://github.com/tpope/vim-surround",
+  "https://github.com/tpope/vim-repeat",
+  "https://github.com/stevearc/oil.nvim",
+  "https://github.com/lewis6991/gitsigns.nvim",
+  "https://github.com/jremmen/vim-ripgrep",
+  "https://github.com/junegunn/fzf.vim",
+  -- "https://github.com/ThePrimeagen/refactoring.nvim"
+  "https://github.com/sainnhe/gruvbox-material",
+}, { load = true })
+
+vim.g.gruvbox_material_background = 'hard'
+vim.g.gruvbox_material_better_performance = 1
+vim.cmd("colorscheme gruvbox-material")
 
 vim.g.rails_projections = {
-	["app/models/*.rb"] = {
-		alternate = {
-			"spec/factories/{plural}.rb",
-			"spec/models/{singular}_spec.rb",
-		},
-	},
-	-- ["spec/factories/*.rb"] = {
-	--    command = "factory",
-	--    affinity = "model",
-	--    alternate = {
-	--      "app/models/{}.rb",
-	--      "spec/models/{}_spec.rb",
-	--    },
-	--    test = "spec/models/{}_spec.rb",
-	--  },
-	["app/controllers/*.rb"] = {
-		alternate = {
-			"spec/requests/{}_spec.rb",
-		},
-		test = "spec/requests/{}_spec.rb",
-	},
-	["spec/requests/*_spec.rb"] = {
-		command = "request",
-		affinity = "controller",
-		alternate = {
-			"app/controllers/{}.rb",
-		},
-		test = "spec/requests/{}_spec.rb",
-	},
-	["spec/factories/*.rb"] = {
-		command = "factory",
-		affinity = "model",
-		alternate = {
-			"app/models/{singular}.rb",
-			"spec/models/{singular}_spec.rb",
-		},
-		test = "spec/models/{singular}_spec.rb",
-	},
+  ["app/models/*.rb"] = {
+    alternate = {
+      "spec/factories/{plural}.rb",
+      "spec/models/{singular}_spec.rb",
+    },
+  },
+  -- ["spec/factories/*.rb"] = {
+  --    command = "factory",
+  --    affinity = "model",
+  --    alternate = {
+  --      "app/models/{}.rb",
+  --      "spec/models/{}_spec.rb",
+  --    },
+  --    test = "spec/models/{}_spec.rb",
+  --  },
+  ["app/controllers/*.rb"] = {
+    alternate = {
+      "spec/requests/{}_spec.rb",
+    },
+    test = "spec/requests/{}_spec.rb",
+  },
+  ["spec/requests/*_spec.rb"] = {
+    command = "request",
+    affinity = "controller",
+    alternate = {
+      "app/controllers/{}.rb",
+    },
+    test = "spec/requests/{}_spec.rb",
+  },
+  ["spec/factories/*.rb"] = {
+    command = "factory",
+    affinity = "model",
+    alternate = {
+      "app/models/{singular}.rb",
+      "spec/models/{singular}_spec.rb",
+    },
+    test = "spec/models/{singular}_spec.rb",
+  },
 }
 
 -- https://raw.githubusercontent.com/neovim/nvim-lspconfig/refs/heads/master/lsp/ruby_lsp.lua
@@ -152,28 +157,28 @@ vim.g.rails_projections = {
 -- gem install ruby-lsp-rails-factory-bot
 -- gem install ruby-lsp-rspec
 vim.lsp.config('ruby_lsp', {
-	cmd = function(dispatchers, config)
-		return vim.lsp.rpc.start(
-			{ 'ruby-lsp' },
-			dispatchers,
-			config and config.root_dir and { cwd = config.cmd_cwd or config.root_dir }
-		)
-	end,
-	filetypes = { 'ruby', 'eruby' },
-	root_markers = { 'Gemfile', '.git' },
-	init_options = {
-		formatter = 'auto',
-	},
-	reuse_client = function(client, config)
-		config.cmd_cwd = config.root_dir
-		return client.config.cmd_cwd == config.cmd_cwd
-	end,
+  cmd = function(dispatchers, config)
+    return vim.lsp.rpc.start(
+      { 'ruby-lsp' },
+      dispatchers,
+      config and config.root_dir and { cwd = config.cmd_cwd or config.root_dir }
+    )
+  end,
+  filetypes = { 'ruby', 'eruby' },
+  root_markers = { 'Gemfile', '.git' },
+  init_options = {
+    formatter = 'auto',
+  },
+  reuse_client = function(client, config)
+    config.cmd_cwd = config.root_dir
+    return client.config.cmd_cwd == config.cmd_cwd
+  end,
 })
 -- https://raw.githubusercontent.com/neovim/nvim-lspconfig/refs/heads/master/lsp/rubocop.lua
 vim.lsp.config('rubocop', {
-	cmd = { 'rubocop', '--lsp' },
-	filetypes = { 'ruby' },
-	root_markers = { 'Gemfile', '.git' },
+  cmd = { 'rubocop', '--lsp' },
+  filetypes = { 'ruby' },
+  root_markers = { 'Gemfile', '.git' },
 })
 vim.lsp.config('rust_analyzer', {})
 
@@ -185,8 +190,8 @@ vim.lsp.enable("emmet-ls")
 
 require("neoscroll").setup()
 require("oil").setup({
-	skip_confirm_for_simple_edits = true,
-	prompt_save_on_select_new_entry = true,
+  skip_confirm_for_simple_edits = true,
+  prompt_save_on_select_new_entry = true,
 })
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
@@ -201,19 +206,28 @@ vim.keymap.set("n", "<leader>hR", "<CMD>Gitsigns reset_buffer<CR>")
 vim.keymap.set("n", "<leader>hd", "<CMD>Gitsigns diffthis<CR>")
 
 vim.keymap.set("n", "[e", function()
-	vim.diagnostic.jump({ count = -1 * vim.v.count1, severity = vim.diagnostic.severity.ERROR })
+  vim.diagnostic.jump({ count = -1 * vim.v.count1, severity = vim.diagnostic.severity.ERROR, float = true })
+end)
+vim.keymap.set("n", "]e", function()
+  vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.ERROR, float = true })
 end)
 
-vim.keymap.set("n", "]e", function()
-	vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.ERROR })
+vim.keymap.set("n", "[d", function()
+  vim.diagnostic.jump({ count = -1 * vim.v.count1, severity = nil, float = true })
+end)
+vim.keymap.set("n", "]d", function()
+  vim.diagnostic.jump({ count = vim.v.count1, severity = nil, float = true })
 end)
 
 vim.keymap.set("n", "<leader>F", function() vim.lsp.buf.format({ async = true }) end)
+vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end)
+vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end)
+vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end)
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "gitcommit",
-	callback = function()
-		vim.cmd("startinsert")
-	end,
+  pattern = "gitcommit",
+  callback = function()
+    vim.cmd("startinsert")
+  end,
 })
 vim.keymap.set("n", "<leader>C", "<CMD>Git commit -v<CR>")
