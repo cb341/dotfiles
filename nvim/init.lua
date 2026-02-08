@@ -12,6 +12,8 @@ vim.opt.undofile = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.cmd("colorscheme sorbet")
+vim.opt.scrolloff = 10
+vim.opt.list = true
 
 vim.opt.runtimepath:append("/opt/homebrew/opt/fzf")
 vim.lsp.config("lua_ls",{
@@ -32,13 +34,35 @@ vim.lsp.config("lua_ls",{
 	},
 })
 
+vim.lsp.config("emmet-ls", {
+	cmd = { 'emmet-ls', '--stdio' },
+	filetypes = {
+		'astro',
+		'css',
+		'eruby',
+		'html',
+		'htmlangular',
+		'htmldjango',
+		'javascriptreact',
+		'less',
+		'pug',
+		'sass',
+		'scss',
+		'svelte',
+		'templ',
+		'typescriptreact',
+		'vue',
+	},
+	root_markers = { '.git' },
+})
+
 -- vim.lsp.config['ruby_lsp'] = {
 -- 	cmd = { 'ruby-lsp' },
 -- 	filetypes = { 'rb', 'ruby', 'eruby' },
 -- }
 -- vim.lsp.enable({ "lua_ls", "ruby_lsp" })
 
-vim.cmd [[set completeopt+=menuone,noselect,popup]]
+vim.cmd [[set completeopt+=menuone,noinsert,popup]]
 
 vim.g.mapleader = " "
 vim.keymap.set({ "n", "v", "x" }, "<leader>s", "<Cmd>source $MYVIMRC<CR>")
@@ -78,6 +102,7 @@ vim.pack.add({
 	"https://github.com/lewis6991/gitsigns.nvim",
 	"https://github.com/jremmen/vim-ripgrep",
 	"https://github.com/junegunn/fzf.vim",
+	"https://github.com/ThePrimeagen/refactoring.nvim"
 })
 
 vim.g.rails_projections = {
@@ -87,15 +112,15 @@ vim.g.rails_projections = {
 			"spec/models/{singular}_spec.rb",
 		},
 	},
-	["spec/factories/*.rb"] = {
-    command = "factory",
-    affinity = "model",
-    alternate = {
-      "app/models/{}.rb",
-      "spec/models/{}_spec.rb",
-    },
-    test = "spec/models/{}_spec.rb",
-  },
+	-- ["spec/factories/*.rb"] = {
+	--    command = "factory",
+	--    affinity = "model",
+	--    alternate = {
+	--      "app/models/{}.rb",
+	--      "spec/models/{}_spec.rb",
+	--    },
+	--    test = "spec/models/{}_spec.rb",
+	--  },
   ["app/controllers/*.rb"] = {
     alternate = {
       "spec/requests/{}_spec.rb",
@@ -121,12 +146,35 @@ vim.g.rails_projections = {
   },
 }
 
-vim.lsp.config('ruby_lsp', {})
+-- https://raw.githubusercontent.com/neovim/nvim-lspconfig/refs/heads/master/lsp/ruby_lsp.lua
+-- gem install ruby-lsp
+-- gem install ruby-lsp-rails
+-- gem install ruby-lsp-rails-factory-bot
+-- gem install ruby-lsp-rspec
+vim.lsp.config('ruby_lsp', {
+  cmd = function(dispatchers, config)
+    return vim.lsp.rpc.start(
+      { 'ruby-lsp' },
+      dispatchers,
+      config and config.root_dir and { cwd = config.cmd_cwd or config.root_dir }
+    )
+  end,
+  filetypes = { 'ruby', 'eruby' },
+  root_markers = { 'Gemfile', '.git' },
+  init_options = {
+    formatter = 'auto',
+  },
+  reuse_client = function(client, config)
+    config.cmd_cwd = config.root_dir
+    return client.config.cmd_cwd == config.cmd_cwd
+  end,
+})
 vim.lsp.config('rust_analyzer', {})
 
 vim.lsp.enable("lua_ls")
 vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("ruby_lsp")
+vim.lsp.enable("emmet-ls")
 
 require("neoscroll").setup()
 require("oil").setup({
