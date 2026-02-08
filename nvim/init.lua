@@ -12,11 +12,11 @@ vim.opt.undofile = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.cmd("colorscheme sorbet")
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 6
 vim.opt.list = true
 
 vim.opt.runtimepath:append("/opt/homebrew/opt/fzf")
-vim.lsp.config("lua_ls",{
+vim.lsp.config("lua_ls", {
 	filetypes = { 'lua' },
 	cmd = { 'lua-language-server' },
 	settings = {
@@ -102,7 +102,7 @@ vim.pack.add({
 	"https://github.com/lewis6991/gitsigns.nvim",
 	"https://github.com/jremmen/vim-ripgrep",
 	"https://github.com/junegunn/fzf.vim",
-	"https://github.com/ThePrimeagen/refactoring.nvim"
+	-- "https://github.com/ThePrimeagen/refactoring.nvim"
 })
 
 vim.g.rails_projections = {
@@ -121,29 +121,29 @@ vim.g.rails_projections = {
 	--    },
 	--    test = "spec/models/{}_spec.rb",
 	--  },
-  ["app/controllers/*.rb"] = {
-    alternate = {
-      "spec/requests/{}_spec.rb",
-    },
-    test = "spec/requests/{}_spec.rb",
-  },
-  ["spec/requests/*_spec.rb"] = {
-    command = "request",
-    affinity = "controller",
-    alternate = {
-      "app/controllers/{}.rb",
-    },
-    test = "spec/requests/{}_spec.rb",
-  },
-  ["spec/factories/*.rb"] = {
-    command = "factory",
-    affinity = "model",
-    alternate = {
-      "app/models/{singular}.rb",
-      "spec/models/{singular}_spec.rb",
-    },
-    test = "spec/models/{singular}_spec.rb",
-  },
+	["app/controllers/*.rb"] = {
+		alternate = {
+			"spec/requests/{}_spec.rb",
+		},
+		test = "spec/requests/{}_spec.rb",
+	},
+	["spec/requests/*_spec.rb"] = {
+		command = "request",
+		affinity = "controller",
+		alternate = {
+			"app/controllers/{}.rb",
+		},
+		test = "spec/requests/{}_spec.rb",
+	},
+	["spec/factories/*.rb"] = {
+		command = "factory",
+		affinity = "model",
+		alternate = {
+			"app/models/{singular}.rb",
+			"spec/models/{singular}_spec.rb",
+		},
+		test = "spec/models/{singular}_spec.rb",
+	},
 }
 
 -- https://raw.githubusercontent.com/neovim/nvim-lspconfig/refs/heads/master/lsp/ruby_lsp.lua
@@ -152,28 +152,35 @@ vim.g.rails_projections = {
 -- gem install ruby-lsp-rails-factory-bot
 -- gem install ruby-lsp-rspec
 vim.lsp.config('ruby_lsp', {
-  cmd = function(dispatchers, config)
-    return vim.lsp.rpc.start(
-      { 'ruby-lsp' },
-      dispatchers,
-      config and config.root_dir and { cwd = config.cmd_cwd or config.root_dir }
-    )
-  end,
-  filetypes = { 'ruby', 'eruby' },
-  root_markers = { 'Gemfile', '.git' },
-  init_options = {
-    formatter = 'auto',
-  },
-  reuse_client = function(client, config)
-    config.cmd_cwd = config.root_dir
-    return client.config.cmd_cwd == config.cmd_cwd
-  end,
+	cmd = function(dispatchers, config)
+		return vim.lsp.rpc.start(
+			{ 'ruby-lsp' },
+			dispatchers,
+			config and config.root_dir and { cwd = config.cmd_cwd or config.root_dir }
+		)
+	end,
+	filetypes = { 'ruby', 'eruby' },
+	root_markers = { 'Gemfile', '.git' },
+	init_options = {
+		formatter = 'auto',
+	},
+	reuse_client = function(client, config)
+		config.cmd_cwd = config.root_dir
+		return client.config.cmd_cwd == config.cmd_cwd
+	end,
+})
+-- https://raw.githubusercontent.com/neovim/nvim-lspconfig/refs/heads/master/lsp/rubocop.lua
+vim.lsp.config('rubocop', {
+	cmd = { 'rubocop', '--lsp' },
+	filetypes = { 'ruby' },
+	root_markers = { 'Gemfile', '.git' },
 })
 vim.lsp.config('rust_analyzer', {})
 
 vim.lsp.enable("lua_ls")
 vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("ruby_lsp")
+vim.lsp.enable("rubocop")
 vim.lsp.enable("emmet-ls")
 
 require("neoscroll").setup()
@@ -192,6 +199,14 @@ vim.keymap.set("n", "<leader>hu", "<CMD>Gitsigns undo_stage_hunk<CR>")
 vim.keymap.set("n", "<leader>hr", "<CMD>Gitsigns reset_hunk<CR>")
 vim.keymap.set("n", "<leader>hR", "<CMD>Gitsigns reset_buffer<CR>")
 vim.keymap.set("n", "<leader>hd", "<CMD>Gitsigns diffthis<CR>")
+
+vim.keymap.set("n", "[e", function()
+	vim.diagnostic.jump({ count = -1 * vim.v.count1, severity = vim.diagnostic.severity.ERROR })
+end)
+
+vim.keymap.set("n", "]e", function()
+	vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.ERROR })
+end)
 
 vim.keymap.set("n", "<leader>F", function() vim.lsp.buf.format({ async = true }) end)
 
