@@ -37,22 +37,9 @@ vim.lsp.config("lua_ls", {
 
 vim.lsp.config("emmet-ls", {
   cmd = { 'emmet-ls', '--stdio' },
-  filetypes = {
-    'astro',
-    'css',
-    'eruby',
-    'html',
-    'htmlangular',
-    'htmldjango',
-    'javascriptreact',
-    'less',
-    'pug',
-    'sass',
-    'scss',
-    'svelte',
-    'templ',
-    'typescriptreact',
-    'vue',
+  filetypes = { 'astro', 'css', 'eruby', 'html', 'htmlangular', 'htmldjango',
+    'javascriptreact', 'less', 'pug', 'sass', 'scss', 'svelte', 'templ',
+    'typescriptreact', 'vue',
   },
   root_markers = { '.git' },
 })
@@ -95,6 +82,7 @@ vim.pack.add({
   "https://github.com/karb94/neoscroll.nvim",
   "https://github.com/ruifm/gitlinker.nvim",
   "https://github.com/tpope/vim-fugitive",
+  "https://github.com/vim-ruby/vim-ruby",
   "https://github.com/tpope/vim-rails",
   "https://github.com/RRethy/nvim-treesitter-endwise",
   "https://github.com/tpope/vim-surround",
@@ -105,7 +93,8 @@ vim.pack.add({
   "https://github.com/junegunn/fzf.vim",
   -- "https://github.com/ThePrimeagen/refactoring.nvim"
   "https://github.com/sainnhe/gruvbox-material",
-  "https://github.com/mg979/vim-visual-multi"
+  "https://github.com/mg979/vim-visual-multi",
+  "https://github.com/lucerion/vim-i18n-rails"
 }, { load = true })
 
 -- vim.g.gruvbox_material_background = 'hard'
@@ -167,12 +156,26 @@ vim.lsp.config('ruby_lsp', {
     return client.config.cmd_cwd == config.cmd_cwd
   end,
 })
+
 -- https://raw.githubusercontent.com/neovim/nvim-lspconfig/refs/heads/master/lsp/rubocop.lua
 vim.lsp.config('rubocop', {
   cmd = { 'rubocop', '--lsp' },
   filetypes = { 'ruby' },
   root_markers = { 'Gemfile', '.git' },
 })
+
+vim.lsp.config('solargraph', {
+  cmd = { 'solargraph', 'stdio' },
+  settings = {
+    solargraph = {
+      diagnostics = true,
+    },
+  },
+  init_options = { formatting = true },
+  filetypes = { 'ruby' },
+  root_markers = { 'Gemfile', '.git' },
+})
+
 vim.lsp.config('rust_analyzer', {})
 
 vim.lsp.enable("lua_ls")
@@ -180,6 +183,7 @@ vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("ruby_lsp")
 vim.lsp.enable("rubocop")
 vim.lsp.enable("emmet-ls")
+vim.lsp.enable("solargraph")
 
 require("neoscroll").setup()
 require("oil").setup({
@@ -214,6 +218,8 @@ end)
 
 vim.keymap.set("n", "<leader>F", function() vim.lsp.buf.format({ async = true }) end)
 vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end)
+vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end)
+vim.keymap.set("n", "gr", function() vim.lsp.buf.references() end)
 vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end)
 vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end)
 
