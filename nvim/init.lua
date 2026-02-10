@@ -16,9 +16,12 @@ vim.opt.scrolloff = 6
 vim.opt.list = true
 vim.o.clipboard = "unnamedplus"
 
+vim.cmd [[set completeopt+=menuone,noinsert,popup]]
 vim.opt.runtimepath:append("/opt/homebrew/opt/fzf")
+
+vim.lsp.config("*", { capabilities = vim.lsp.protocol.make_client_capabilities() })
 vim.lsp.config("lua_ls", {
-  filetypes = { 'lua' },
+  filetypes = { "lua" },
   cmd = { 'lua-language-server' },
   settings = {
     Lua = {
@@ -34,6 +37,7 @@ vim.lsp.config("lua_ls", {
     },
   },
 })
+vim.lsp.enable("lua_ls")
 
 vim.lsp.config("emmet-ls", {
   cmd = { 'emmet-ls', '--stdio' },
@@ -43,14 +47,7 @@ vim.lsp.config("emmet-ls", {
   },
   root_markers = { '.git' },
 })
-
--- vim.lsp.config['ruby_lsp'] = {
--- 	cmd = { 'ruby-lsp' },
--- 	filetypes = { 'rb', 'ruby', 'eruby' },
--- }
--- vim.lsp.enable({ "lua_ls", "ruby_lsp" })
-
-vim.cmd [[set completeopt+=menuone,noinsert,popup]]
+vim.lsp.enable("emmet-ls")
 
 vim.g.mapleader = " "
 vim.keymap.set({ "n", "v", "x" }, "<leader>s", "<Cmd>source $MYVIMRC<CR>")
@@ -139,13 +136,7 @@ vim.g.rails_projections = {
 -- gem install ruby-lsp-rails-factory-bot
 -- gem install ruby-lsp-rspec
 vim.lsp.config('ruby_lsp', {
-  cmd = function(dispatchers, config)
-    return vim.lsp.rpc.start(
-      { 'ruby-lsp' },
-      dispatchers,
-      config and config.root_dir and { cwd = config.cmd_cwd or config.root_dir }
-    )
-  end,
+  cmd = {'mise', 'exec', 'ruby@3.4.8', '--', 'ruby-lsp' },
   filetypes = { 'ruby', 'eruby' },
   root_markers = { 'Gemfile', '.git' },
   init_options = {
@@ -156,13 +147,15 @@ vim.lsp.config('ruby_lsp', {
     return client.config.cmd_cwd == config.cmd_cwd
   end,
 })
+vim.lsp.enable("ruby_lsp")
 
 -- https://raw.githubusercontent.com/neovim/nvim-lspconfig/refs/heads/master/lsp/rubocop.lua
-vim.lsp.config('rubocop', {
-  cmd = { 'rubocop', '--lsp' },
-  filetypes = { 'ruby' },
-  root_markers = { 'Gemfile', '.git' },
+vim.lsp.config("rubocop", {
+  cmd = { "rubocop", "--lsp" },
+  filetypes = { "ruby" },
+  root_markers = { "Gemfile", ".git" },
 })
+vim.lsp.enable("rubocop")
 
 vim.lsp.config('solargraph', {
   cmd = { 'solargraph', 'stdio' },
@@ -175,14 +168,6 @@ vim.lsp.config('solargraph', {
   filetypes = { 'ruby' },
   root_markers = { 'Gemfile', '.git' },
 })
-
-vim.lsp.config('rust_analyzer', {})
-
-vim.lsp.enable("lua_ls")
-vim.lsp.enable("rust_analyzer")
-vim.lsp.enable("ruby_lsp")
-vim.lsp.enable("rubocop")
-vim.lsp.enable("emmet-ls")
 vim.lsp.enable("solargraph")
 
 require("neoscroll").setup()
