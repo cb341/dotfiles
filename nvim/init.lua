@@ -74,9 +74,14 @@ vim.api.nvim_create_autocmd("FileType", {
   end
 })
 
+vim.pack.add( { "https://github.com/sainnhe/gruvbox-material" })
+
+-- vim.g.gruvbox_material_background = 'hard'
+vim.g.gruvbox_material_better_performance = 1
+vim.cmd("colorscheme gruvbox-material")
+
 vim.pack.add({
   "https://github.com/nvim-treesitter/nvim-treesitter",
-  "https://github.com/karb94/neoscroll.nvim",
   "https://github.com/ruifm/gitlinker.nvim",
   "https://github.com/tpope/vim-fugitive",
   "https://github.com/vim-ruby/vim-ruby",
@@ -86,17 +91,17 @@ vim.pack.add({
   "https://github.com/tpope/vim-repeat",
   "https://github.com/stevearc/oil.nvim",
   "https://github.com/lewis6991/gitsigns.nvim",
-  "https://github.com/jremmen/vim-ripgrep",
   "https://github.com/junegunn/fzf.vim",
-  -- "https://github.com/ThePrimeagen/refactoring.nvim"
-  "https://github.com/sainnhe/gruvbox-material",
   "https://github.com/mg979/vim-visual-multi",
-  "https://github.com/lucerion/vim-i18n-rails"
+  -- Experiments
+  "https://github.com/karb94/neoscroll.nvim",
+  "https://github.com/jremmen/vim-ripgrep",
+  "https://github.com/sainnhe/gruvbox-material",
+  "https://github.com/lucerion/vim-i18n-rails",
+  "https://github.com/nvim-lua/plenary.nvim",
+  "https://github.com/ThePrimeagen/refactoring.nvim",
+  "https://github.com/nvim-neotest/neotest",
 }, { load = true })
-
--- vim.g.gruvbox_material_background = 'hard'
-vim.g.gruvbox_material_better_performance = 1
-vim.cmd("colorscheme gruvbox-material")
 
 vim.g.rails_projections = {
   ["app/models/*.rb"] = {
@@ -141,6 +146,10 @@ vim.lsp.config('ruby_lsp', {
   root_markers = { 'Gemfile', '.git' },
   init_options = {
     formatter = 'auto',
+    experimentalFeaturesEnabled = true,
+    addons = {
+      ruby_lsp_i18n = { enable = true }
+    }
   },
   reuse_client = function(client, config)
     config.cmd_cwd = config.root_dir
@@ -168,7 +177,7 @@ vim.lsp.config('solargraph', {
   filetypes = { 'ruby' },
   root_markers = { 'Gemfile', '.git' },
 })
-vim.lsp.enable("solargraph")
+-- vim.lsp.enable("solargraph")
 
 require("neoscroll").setup()
 require("oil").setup({
@@ -206,7 +215,8 @@ vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end)
 vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end)
 vim.keymap.set("n", "gr", function() vim.lsp.buf.references() end)
 vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end)
-vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end)
+vim.keymap.set({"n", "x"}, "<leader>ca", function() vim.lsp.buf.code_action() end)
+vim.keymap.set("n", "<leader>cr", function() vim.lsp.buf.rename() end)
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "gitcommit",

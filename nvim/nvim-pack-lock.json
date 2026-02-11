@@ -36,6 +36,10 @@
       "rev": "c8d29979cb0cb3a2437a8e0ae683fd82f340d3b8",
       "src": "git@github.com:karb94/neoscroll.nvim"
     },
+    "neotest": {
+      "rev": "deadfb1af5ce458742671ad3a013acb9a6b41178",
+      "src": "https://github.com/nvim-neotest/neotest"
+    },
     "nvim-lspconfig": {
       "rev": "238583bb00770b079c68c69a860d65e5d1d8acf9",
       "src": "git@github.com:neovim/nvim-lspconfig"
@@ -52,6 +56,10 @@
       "rev": "f55b25e493a7df76371cfadd0ded5004cb9cd48a",
       "src": "https://github.com/stevearc/oil.nvim"
     },
+    "plenary.nvim": {
+      "rev": "b9fd5226c2f76c951fc8ed5923d85e4de065e509",
+      "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
     "refactoring.nvim": {
       "rev": "6784b54587e6d8a6b9ea199318512170ffb9e418",
       "src": "https://github.com/ThePrimeagen/refactoring.nvim"
@@ -59,6 +67,10 @@
     "vim-fugitive": {
       "rev": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4",
       "src": "git@github.com:tpope/vim-fugitive"
+    },
+    "vim-i18n-rails": {
+      "rev": "7a8402597dbd2ffca0a632864027c6a7e2d321ea",
+      "src": "git@github.com:lucerion/vim-i18n-rails"
     },
     "vim-rails": {
       "rev": "b0a5c76f86ea214ade36ab0b811e730c3f0add67",
@@ -71,6 +83,10 @@
     "vim-ripgrep": {
       "rev": "2bb2425387b449a0cd65a54ceb85e123d7a320b8",
       "src": "git@github.com:jremmen/vim-ripgrep"
+    },
+    "vim-ruby": {
+      "rev": "bf3a5994ce63796db7b1b04aea92772271f387aa",
+      "src": "git@github.com:vim-ruby/vim-ruby"
     },
     "vim-surround": {
       "rev": "3d188ed2113431cf8dac77be61b842acb64433d9",
