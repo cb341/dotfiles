@@ -1,12 +1,46 @@
 return {
   {
     "RRethy/nvim-treesitter-endwise",
-    lazy = false
+    lazy = false,
   },
   {
     "tpope/vim-rails",
     lazy = false,
     ft = { "ruby", "eruby" },
+    config = function()
+      vim.g.rails_projections = {
+        ["app/models/*.rb"] = {
+          alternate = {
+            "spec/factories/{plural}.rb",
+            "spec/models/{singular}_spec.rb",
+          },
+          test = "spec/models/{singular}_spec.rb",
+        },
+        ["app/controllers/*.rb"] = {
+          alternate = {
+            "spec/requests/{}_spec.rb",
+          },
+          test = "spec/requests/{}_spec.rb",
+        },
+        ["spec/requests/*_spec.rb"] = {
+          command = "request",
+          affinity = "controller",
+          alternate = {
+            "app/controllers/{}.rb",
+          },
+          test = "spec/requests/{}_spec.rb",
+        },
+        ["spec/factories/*.rb"] = {
+          command = "factory",
+          affinity = "model",
+          alternate = {
+            "app/models/{singular}.rb",
+            "spec/models/{singular}_spec.rb",
+          },
+          test = "spec/models/{singular}_spec.rb",
+        },
+      }
+    end,
   },
   {
     "neovim/nvim-lspconfig",
@@ -43,8 +77,8 @@ return {
           },
         },
         solargraph = {
-          commandPath = "/Users/dani/.local/share/mise/installs/ruby/3.4.7/bin/solargraph",
-          -- cmd = { "mise", "exec", "--", "solargraph", "stdio" },
+          -- commandPath = "/Users/dani/.local/share/mise/installs/ruby/3.4.7/bin/solargraph",
+          cmd = { "mise", "exec", "--", "solargraph", "stdio" },
         },
         rubocop = { cmd = { "mise", "exec", "--", "rubocop", "--lsp" } },
         standardrb = { cmd = { "mise", "exec", "--", "standardrb", "--lsp" } },
