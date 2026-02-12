@@ -1,5 +1,18 @@
 export ZSH="$HOME/.oh-my-zsh"
 
+DISABLE_AUTO_UPDATE="true"
+DISABLE_MAGIC_FUNCTIONS="true"
+DISABLE_COMPFIX="true"
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="20"
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+
+autoload -Uz compinit
+if [ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)" ]; then
+    compinit
+else
+    compinit -C
+fi
+
 set -o vi
 
  # https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
@@ -15,8 +28,8 @@ set -o vi
    zsh-vi-mode
    fast-syntax-highlighting
    rust
-   zsh-autocomplete
-   zsh_codex
+   # zsh-autocomplete
+   # zsh_codex
  )
 
  source $HOME/.import-secrets.sh
@@ -25,8 +38,6 @@ set -o vi
  source "$HOME/.cargo/env"
 
  [[ -f local_zsh ]] && source local_zsh
-
- # unalias sd
 
  DISABLE_AUTO_TITLE="true"
 
@@ -189,5 +200,5 @@ bindkey '^X' create_completion # omzsh codex plugin
 export PATH="/opt/homebrew/opt/gradle@8/bin:$PATH"
 export PATH="/opt/homebrew/opt/php@8.1/bin:$PATH"
 export PATH="/opt/homebrew/opt/php@8.1/sbin:$PATH"
-  export LDFLAGS="-L/opt/homebrew/opt/php@8.1/lib"
-  export CPPFLAGS="-I/opt/homebrew/opt/php@8.1/include"
+export LDFLAGS="-L/opt/homebrew/opt/php@8.1/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/php@8.1/include"
