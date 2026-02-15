@@ -4,6 +4,33 @@ return {
     lazy = false,
   },
   {
+    "cb341/i18n.nvim",
+    branch = "main",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("i18n").setup({
+        auto_detect = true,
+      })
+    end,
+  },
+  {
+    "saghen/blink.cmp",
+    opts = {
+      sources = {
+        compat = {},
+        default = { "lsp", "path", "i18n", "snippets", "buffer" },
+        providers = {
+          i18n = {
+            name = 'i18n',
+            module = 'i18n.integration.blink_source',
+          }
+        }
+      },
+    },
+  },
+  {
     "tpope/vim-rails",
     lazy = false,
     ft = { "ruby", "eruby" },
