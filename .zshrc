@@ -195,6 +195,7 @@ fpath+=/Users/dani/.zfunc
 source <(ng completion script)
 
 alias py='python'
+alias car='cargo'
 
 bindkey '^X' create_completion # omzsh codex plugin
 export PATH="/opt/homebrew/opt/gradle@8/bin:$PATH"
